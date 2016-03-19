@@ -1,0 +1,33 @@
+{
+  "name": "gulp-devtools-live-browserify",
+  "version": "0.0.1",
+  "description": "a gulp plugin to use browserify with devtools live",
+  "main": "browserify.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StudioLabs/gulp-devtools-live-browserify.git"
+  },
+  "keywords": [
+    "devtools",
+    "live",
+    "browserify"
+  ],
+  "author": "Steed Monteiro <steed.monteiro@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StudioLabs/gulp-devtools-live-browserify/issues"
+  },
+  "homepage": "https://github.com/StudioLabs/gulp-devtools-live-browserify",
+  "dependencies": {
+    "browserify-unpack": "^0.3.5",
+    "combine-source-map": "^0.7.1",
+    "event-stream": "^3.3.2",
+    "through2": "^2.0.0",
+    "utf8": "^2.1.1",
+    "vinyl": "^1.1.0"
+  },
+  "devDependencies": {}
+}
