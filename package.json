@@ -1,7 +1,7 @@
 {
   "name": "gulp-devtools-live-browserify",
   "version": "0.0.1",
-  "description": "a gulp plugin to use browserify with devtools live",
+  "description": "Gulp plugin to use browserify with devtools live",
   "main": "browserify.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
