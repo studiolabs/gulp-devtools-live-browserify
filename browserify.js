@@ -98,16 +98,19 @@ BrowserifyDevToolsFile.prototype.saveFile = function (browserifyContent) {
 
 };
 
-BrowserifyDevToolsFile.prototype.createWriteStream = function(devtoolsLive, file) {
 
-	var modifyFile = function(file) {
-	 	this.saveFile(file.contents.toString());
-  	}.bind(this);
+BrowserifyDevToolsFile.prototype.createWriteStream  = function() {
 
-	return ES.through(modifyFile);
+    var data = []; // We'll store all the data inside this array
+    var writeStream = function (chunk) {
+      data.push(chunk);
+    };
+    var endStream  = function() { // Will be emitted when the input stream has ended, ie. no more data will be provided
+      this.saveFile(Buffer.concat(data).toString());
+    }.bind(this);
 
+    return ES.through(writeStream, endStream);
 };
-
 
 
 module.exports = BrowserifyDevTools;
