@@ -19,18 +19,19 @@ function BrowserifyDevTools(options) {
 
 BrowserifyDevTools.prototype.init = function(devtoolsLive) {
 
-		this.output = devtoolsLive.options.devtools.destination;
-	  browserifyUnpack = new BrowserifyUnpack({
-      file: this.src,
-      output: devtoolsLive.options.devtools.destination,
-      directory: devtoolsLive.options.devtools.directory,
-      map : true,
-      sourcemap:true,
-      mkdir : process.fs.mkdirpSync.bind(process.fs),
+	this.output = devtoolsLive.options.devtools.destination;
+	browserifyUnpack = new BrowserifyUnpack({
+		file: this.src,
+		output: devtoolsLive.options.devtools.destination,
+		directory: devtoolsLive.options.devtools.directory,
+		map : true,
+		sourcemap:true,
+		mkdir : process.fs.mkdirpSync.bind(process.fs),
   		write : process.fs.writeFileSync.bind(process.fs)
     });
-	  this.devtoolsLive = devtoolsLive;
-	  var map = browserifyUnpack.unpack();
+
+	this.devtoolsLive = devtoolsLive;
+	var map = browserifyUnpack.unpack();
     this.loadMap(map);
 };
 
@@ -49,9 +50,7 @@ BrowserifyDevTools.prototype.loadMap = function(map) {
 };
 
 BrowserifyDevTools.prototype.resolve = function(devtoolsLive, file) {
-
 	var  browserifyDevToolsTmpFile = new BrowserifyDevToolsFile(devtoolsLive, file);
-
 	this.cmd(file.path, browserifyDevToolsTmpFile.createWriteStream(), devtoolsLive.onError, file.deps);
 };
 
@@ -65,20 +64,20 @@ BrowserifyDevToolsFile.prototype.saveFile = function (browserifyContent) {
 
 		var record = {
 			action: 'update',
-			resourceURL: this.devtoolsLive.getClientPageUrl() + this.file.url
+			url: this.devtoolsLive.getClientPageUrl() + this.file.url
 		};
 
 		var originalFileContent = '';
 		if (this.file.content === undefined) {
 			originalFileContent = utf8.encode(fs.readFileSync(this.file.path).toString());
-			record.sync = this.devtoolsLive.getClientHostname() + '/' + this.file.name;
+			record.sync = this.devtoolsLive.getClientHostname() + '/' + this.file.src;
 		} else {
 			originalFileContent = this.file.content;
 			delete this.file.content;
-			record.resourceName = this.devtoolsLive.getClientHostname() + '/' + this.file.name;
+			record.src = this.devtoolsLive.getClientHostname() + '/' + this.file.src;
 		}
 
-		record.event = this.file.variable;
+		record.event = this.file.src.replace(/([\/|\.|\-])/g, '_');
 
 		this.file.sync = originalFileContent;
 
@@ -87,12 +86,12 @@ BrowserifyDevToolsFile.prototype.saveFile = function (browserifyContent) {
 		if(browserifyFile !== undefined){
 			var fileContent = this.file.line +
 				'\n' + browserifyFile.content + '\n' +
-			'}'+ '\n'+ browserifyFile.mapInline;
+			'}';
 
 			record.content = fileContent ;
 			this.devtoolsLive.broadcast(record);
 
-			process.fs.writeFileSync(this.file.output, record.content );
+			process.fs.writeFileSync(this.file.output, record.content);
 
 		}
 
