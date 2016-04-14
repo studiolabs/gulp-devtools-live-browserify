@@ -41,7 +41,6 @@ BrowserifyDevTools.prototype.loadMap = function(map) {
 	for (var i in map) {
 		map[i].plugin = this;
 		map[i].output = this.output +'/' + map[i].url;
-
 		this.devtoolsLive.registerFile(map[i]);
 		process.live['browserify'] += "\n<script type='text/javascript' src='/"+map[i].url+"?"+today+"'></script>";
 	}
@@ -67,26 +66,21 @@ BrowserifyDevToolsFile.prototype.saveFile = function (browserifyContent) {
 			url: this.devtoolsLive.getClientPageUrl() + this.file.url
 		};
 
-		var originalFileContent = '';
 		if (this.file.content === undefined) {
-			originalFileContent = utf8.encode(fs.readFileSync(this.file.path).toString());
 			record.sync = this.devtoolsLive.getClientHostname() + '/' + this.file.src;
 		} else {
-			originalFileContent = this.file.content;
+			record.resourceName = this.devtoolsLive.getClientHostname() + '/' + this.file.src;
 			delete this.file.content;
-			record.src = this.devtoolsLive.getClientHostname() + '/' + this.file.src;
 		}
 
-		record.event = this.file.src.replace(/([\/|\.|\-])/g, '_');
-
-		this.file.sync = originalFileContent;
+		record.event = this.file.src;
 
 		var browserifyFile = browserifyUnpack.extract(this.file, browserifyContent);
 
 		if(browserifyFile !== undefined){
 			var fileContent = this.file.line +
 				'\n' + browserifyFile.content + '\n' +
-			'}';
+			'}'+ '\n'+ browserifyFile.mapInline;
 
 			record.content = fileContent ;
 			this.devtoolsLive.broadcast(record);
