@@ -8,7 +8,7 @@ var BrowserifyUnpack = require('browserify-unpack');
 var through2 = require('through2');
 var ES = require('event-stream');
 var baseStream = require('stream');
-
+var Immutable = require('immutable');
 
 var browserifyUnpack;
 
@@ -50,9 +50,8 @@ BrowserifyDevTools.prototype.loadMap = function(map) {
 
 BrowserifyDevTools.prototype.resolve = function(devtoolsLive, file) {
 	var  browserifyDevToolsTmpFile = new BrowserifyDevToolsFile(devtoolsLive, file);
-	this.cmd(file.path, browserifyDevToolsTmpFile.createWriteStream(), devtoolsLive.onError, file.deps);
+	this.cmd(file.path, browserifyDevToolsTmpFile.createWriteStream(), devtoolsLive.onError, file.externals);
 };
-
 
 function BrowserifyDevToolsFile( devtoolsLive, file){
 	this.file = file;
@@ -81,6 +80,20 @@ BrowserifyDevToolsFile.prototype.saveFile = function (browserifyContent) {
 			var fileContent = this.file.line +
 				'\n' + browserifyFile.content + '\n' +
 			'}'+ '\n'+ browserifyFile.mapInline;
+
+			this.file.deps.map(function(value, index){
+				if(browserifyFile.info.deps[index] !== undefined){
+					browserifyFile.info.deps[index] = value;
+				}
+			});
+
+			console.log('file', this.file.deps);
+			console.log('browserifyFile', browserifyFile.info.deps);
+
+			var result = Immutable.Map(browserifyFile.info.deps);
+			var equals = Immutable.is(this.file.deps, result);
+
+			this.file.deps = result;
 
 			record.content = fileContent ;
 			this.devtoolsLive.broadcast(record);
