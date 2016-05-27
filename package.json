@@ -1,6 +1,6 @@
 {
 	"name": "gulp-devtools-live-browserify",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Gulp plugin to use browserify with devtools live",
 	"main": "browserify.js",
 	"scripts": {

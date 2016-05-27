@@ -100,8 +100,6 @@ BrowserifyDevTools.prototype.saveLoader = function (browserifyContent, update) {
 	}
 
 	if(this.stream !== undefined){
-				console.log('js finished');
-
 		this.devtoolsLive.streamFinished(this);
 	}
 };
