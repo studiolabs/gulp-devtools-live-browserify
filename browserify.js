@@ -49,10 +49,10 @@ BrowserifyDevTools.prototype.loadMap = function(map) {
 	var today = new Date().getTime();
 	var html = [];
 	var urls = [];
-	map.push(this.file);
 	for (var i in map) {
 		map[i].plugin = this;
 		map[i].output = this.output +'/' + map[i].url;
+
 		var line =  "<script type='text/javascript' src='/"+map[i].url+"?"+today+"'></script>\n";
 
 		process.live['browserify'] += line;
@@ -68,6 +68,8 @@ BrowserifyDevTools.prototype.loadMap = function(map) {
 			urls.push(map[i].url);
 		}
 	}
+
+	process.live['browserify'] +=  "<script type='text/javascript' src='/"+this.file.url+"?"+today+"'></script>\n";
 
 	return { html : html, urls: urls };
 };
