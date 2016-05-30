@@ -1,6 +1,6 @@
 {
 	"name": "gulp-devtools-live-browserify",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "Gulp plugin to use browserify with devtools live",
 	"main": "browserify.js",
 	"scripts": {
@@ -22,7 +22,7 @@
 	},
 	"homepage": "https://github.com/StudioLabs/gulp-devtools-live-browserify",
 	"dependencies": {
-		"browserify-unpack": "^0.3.7",
+		"browserify-unpack": "^0.3.8",
 		"combine-source-map": "^0.7.1",
 		"event-stream": "^3.3.2",
 		"immutable": "^3.7.6",
