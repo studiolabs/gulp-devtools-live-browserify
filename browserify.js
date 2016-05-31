@@ -158,7 +158,8 @@ BrowserifyDevToolsFile.prototype.saveFile = function (browserifyContent) {
 			process.fs.writeFileSync(this.file.output, record.content);
 
 			if(equals == false){
-				this.file.plugin.load(record);
+				this.devtoolsLive.reload();
+				//this.file.plugin.load(record);
 			}else{
 				this.devtoolsLive.broadcast(record);
 			}
